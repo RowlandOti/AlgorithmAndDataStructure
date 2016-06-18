@@ -17,6 +17,17 @@ A project containing implementations of popular algorithms and Data structures. 
 - Graph
 - Trees
 
+## Reference Books
+- Introduction to Algorithms by Thomas .H Cormen.
+- The Art of Computer Programming - Volume 1,2,3, and 4 by Donald E.Knuth.
+- Introduction to the Design and Analysis of Algorithms by Anany Levitim.
+- Fundamentals of Data Structure by Ellis Horowitz
+
+I do not endorse these books, but I put them here because I found an easy read with them. 
+## Video Resources
+An additional video resource to accompany "Introduction to Algorithms" would be :
+- This Popular Khan Academy Course - https://www.khanacademy.org/computing/computer-science/algorithms
+
 If you would like to contribute to implementations of more Algorithms and Data structures, kindly fork the project and create a pull request. 
 
 Preview: 
