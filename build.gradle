@@ -23,6 +23,11 @@ test {
     systemProperties 'property': 'value'
 }
 
+task wrapper(type: Wrapper) {
+    description 'Creates the gradle wrapper.'
+    gradleVersion '2.2.1'
+}
+
 uploadArchives {
     repositories {
        flatDir {
