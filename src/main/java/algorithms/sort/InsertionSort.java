@@ -3,17 +3,15 @@ package algorithms.sort;
 import java.util.Arrays;
 import java.util.Scanner;
 
-import static algorithms.sort.HeapSort.swap;
-
 /**
  * Created by Rowland on 12/6/2016.
  */
-public class BubbleSort {
+public class InsertionSort {
 
     /* Main method */
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
-        System.out.println("Bubble Sort Test\n");
+        System.out.println("Insertion Sort Test\n");
 
         int n, i;
         /* Accept number of elements */
@@ -29,19 +27,25 @@ public class BubbleSort {
         sort(arr, n);
     }
 
-    public static void sort(int A[], int n) {
+    // Selection sort method
+    public static void sort(int[] A, int n) {
         /* Print sorted Array */
         System.out.println("\nElements assortment ");
-        for (int i = 0; i < n - 1; i++) {
+        for (int i = 0; i < n; i++) {
 
-            for (int j = 0; j < n - i - 1; j++) {
-                if (A[j] > A[j + 1]) {
-                    swap(A, j, j + 1);
-                }
-                System.out.println();
-                System.out.print(Arrays.toString(A));
-                System.out.println();
+            int tmp = A[i];
+            int j = i;
+
+            while(j>0 && tmp < A[j -1]) {
+                A[j] = A[j-1];
+                j = j-1;
             }
+
+            A[j] = tmp;
+
+            System.out.println();
+            System.out.print(Arrays.toString(A));
+            System.out.println();
         }
     }
 
@@ -51,4 +55,5 @@ public class BubbleSort {
         arr[moveFront] = arr[moveBack];
         arr[moveBack] = tmp;
     }
+
 }
