@@ -27,11 +27,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_1
-        targetCompatibility JavaVersion.VERSION_1_1
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_1.toString()
+        jvmTarget = JavaVersion.VERSION_11.toString()
     }
     buildFeatures {
         compose true
@@ -71,7 +71,9 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout-compose:$androidXConstraintLayoutComposeVersion"
 
     testImplementation 'junit:junit:4.13.2'
+
+    androidTestImplementation composeBom
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4"
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
-    androidTestImplementation "androidx.compose.ui:ui-test-junit4"
 }
