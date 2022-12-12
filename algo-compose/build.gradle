@@ -1,0 +1,77 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+android {
+    namespace 'com.rowland.algorithms'
+
+    defaultConfig {
+        applicationId "com.rowland.algorithms"
+        compileSdkVersion comSdkVersion as Integer
+        minSdkVersion miniSdkVersion as Integer
+        targetSdkVersion tarSdkVersion as Integer
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary true
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_1
+        targetCompatibility JavaVersion.VERSION_1_1
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_1.toString()
+    }
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion composeCompilerVersion
+    }
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
+}
+
+dependencies {
+
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
+    implementation "androidx.core:core-ktx:$androidXCoreVersion"
+
+    // Compose
+    def composeBom = platform("androidx.compose:compose-bom:$composeBomVersion")
+    implementation composeBom
+
+    debugImplementation "androidx.compose.ui:ui-tooling"
+    debugImplementation "androidx.compose.ui:ui-test-manifest"
+
+    implementation "androidx.compose.ui:ui"
+    implementation "androidx.compose.ui:ui-tooling-preview"
+    implementation "androidx.compose.material3:material3"
+    implementation 'androidx.compose.material:material-icons-extended'
+    implementation 'androidx.compose.material3:material3-window-size-class'
+    implementation 'androidx.compose.runtime:runtime-livedata'
+
+    implementation "androidx.activity:activity-compose:$composeActivitiesVersion"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$androidXLifecycleRuntimeVersion"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$androidXViewmodelComposeVersion"
+    implementation "androidx.constraintlayout:constraintlayout-compose:$androidXConstraintLayoutComposeVersion"
+
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.4'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4"
+}
