@@ -8,11 +8,13 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
@@ -25,8 +27,8 @@ import com.rowland.algorithms.ui.theme.AlgorithmAndDataStructureTheme
 
 fun main(args: Array<String>) {
     val blocks = mutableListOf<Int>()
-    for (i in 0..10) {
-        val num = (0..9).random()
+    for (i in 0..7) {
+        val num = (0..20).random()
         blocks.add(num)
     }
 
@@ -48,7 +50,7 @@ fun bubbleSort(blocks: MutableList<Int>) {
 
 fun createRandomBlocks(): MutableList<SortUiItem> {
     val blocks = mutableListOf<SortUiItem>()
-    for (i in 0..9) {
+    for (i in 0..7) {
         val num = (0..20).random()
         blocks.add(
             SortUiItem(
@@ -66,6 +68,56 @@ fun createRandomBlocks(): MutableList<SortUiItem> {
     return blocks
 }
 
+@Composable
+fun Sorting() {
+    val blocks = createRandomBlocks().toMutableStateList()
+
+    val bubbleSortViewModel = SortingViewModel(BubbleSortUseCase(), blocks)
+    val quickSortViewModel = SortingViewModel(BubbleSortUseCase(), blocks)
+    val selectionSortViewModel = SortingViewModel(BubbleSortUseCase(), blocks)
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(10.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+
+        Row {
+            Button(onClick = {
+                bubbleSortViewModel.sort()
+                quickSortViewModel.sort()
+                selectionSortViewModel.sort()
+            }) {
+                Text(
+                    text = "Sort blocks",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp
+                )
+            }
+            Spacer(modifier = Modifier.padding(10.dp))
+
+            Button(onClick = {
+                blocks.clear()
+                blocks.addAll(createRandomBlocks().toMutableStateList())
+            }) {
+                Text(
+                    text = "Random",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp
+                )
+            }
+        }
+
+        SortingView(
+            bubbleSortViewModel = bubbleSortViewModel,
+            quickSortViewModel = quickSortViewModel,
+            selectionSortViewModel = selectionSortViewModel
+        )
+    }
+}
+
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -74,10 +126,10 @@ fun SortingView(
     quickSortViewModel: SortingViewModel,
     selectionSortViewModel: SortingViewModel
 ) {
-    Column {
+    Column(modifier = Modifier.fillMaxWidth()) {
         Spacer(modifier = Modifier.padding(5.dp))
 
-        Row() {
+        Row(horizontalArrangement = Arrangement.SpaceAround, modifier = Modifier.fillMaxWidth()) {
             SortingColumn(blocks = bubbleSortViewModel.blocks, header = "Bubble")
             SortingColumn(blocks = quickSortViewModel.blocks, header = "Quick")
             SortingColumn(blocks = selectionSortViewModel.blocks, header = "Selection")
@@ -89,6 +141,7 @@ fun SortingView(
 @Composable
 fun SortingColumn(blocks: List<SortUiItem>, header: String) {
     LazyColumn(
+        modifier = Modifier.fillMaxHeight(),
         contentPadding = PaddingValues(2.dp),
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -132,7 +185,6 @@ fun AnimatedBox(block: SortUiItem, modifier: Modifier) {
 }
 
 @Preview(name = "Light Mode", showBackground = true)
-@Preview(name = "Dark Mode", showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun SortingViewPreview() {
     AlgorithmAndDataStructureTheme {

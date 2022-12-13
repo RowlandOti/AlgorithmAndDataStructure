@@ -30,7 +30,8 @@ class SortingViewModel(
 
                     if (sortEvent.shouldSwap) {
                         val temp = blocks[index].copy(comparingActive = false, swapped = true)
-                        blocks[index] = blocks[index + 1].copy(comparingActive = false)
+                        blocks[index] =
+                            blocks[index + 1].copy(comparingActive = false, swapped = false)
                         blocks[index + 1] = temp
                         delay(500)
 
