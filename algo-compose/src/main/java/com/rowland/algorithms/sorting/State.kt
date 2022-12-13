@@ -1,6 +1,6 @@
 package com.rowland.algorithms.sorting
 
-import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,33 +15,10 @@ data class SortUiItem(
     var swapped: Boolean = false,
 )
 
-class SortingViewModel(private val sortUseCase: SortUseCase) : ViewModel() {
-
-    val blocks = mutableStateListOf<SortUiItem>()
-
-    init {
-        createRandomBlocks()
-    }
-
-    fun createRandomBlocks(): MutableList<SortUiItem> {
-        blocks.clear()
-        for (i in 0..9) {
-            val num = (0..20).random()
-            blocks.add(
-                SortUiItem(
-                    id = i,
-                    value = num,
-                    color = Color(
-                        red = (0..255).random(),
-                        green = (0..255).random(),
-                        blue = 255,
-                        alpha = 255
-                    )
-                )
-            )
-        }
-        return blocks
-    }
+class SortingViewModel(
+    private val sortUseCase: SortUseCase,
+    val blocks: MutableList<SortUiItem>
+) : ViewModel() {
 
     fun sort() {
         viewModelScope.launch {

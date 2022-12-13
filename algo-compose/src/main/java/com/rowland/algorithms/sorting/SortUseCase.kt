@@ -68,14 +68,14 @@ class QuickSortUseCase : SortUseCase {
         while (start < end) {
             val pivot = partition(data, start, end)
             sortingHelper(data = data, start = start, end = pivot - 1)
-            sortingHelper(data = data, start = pivot, end = end)
+            sortingHelper(data = data, start = pivot + 1, end = end)
         }
     }
 
     private fun partition(data: MutableList<Int>, start: Int, end: Int): Int {
         val pivot = data[end]
 
-        var i = start-1
+        var i = start - 1
 
         for (j in start..end) {
             i += 1
@@ -85,6 +85,8 @@ class QuickSortUseCase : SortUseCase {
             }
         }
 
-       return i+1
+        swap(array = data, i, end)
+
+        return i + 1
     }
 }
