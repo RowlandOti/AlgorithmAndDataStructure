@@ -1,6 +1,5 @@
 package com.rowland.algorithms.sorting
 
-import android.content.res.Configuration
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.*
@@ -33,7 +32,7 @@ fun main(args: Array<String>) {
     }
 
     println("Unsorted Array: $blocks")
-    val sortedBlocks = bubbleSort(blocks)
+    val sortedBlocks = quickSort(blocks, 0, blocks.size - 1)
     println("Sorted Array: $blocks")
 }
 
@@ -48,10 +47,34 @@ fun bubbleSort(blocks: MutableList<Int>) {
     }
 }
 
+fun quickSort(blocks: MutableList<Int>, start: Int, end: Int) {
+    if (start < end) {
+        val pivotIndex = partition(blocks, start, end)
+        quickSort(blocks, start, pivotIndex - 1)
+        quickSort(blocks, pivotIndex + 1, end)
+    }
+}
+
+fun partition(blocks: MutableList<Int>, start: Int, end: Int): Int {
+    val pivot = blocks[end]
+    // index of smaller element
+    var i = start
+    for (j in start until end) {
+        if (blocks[j] <= pivot) {
+            // All elements < pivot moved to the left
+            swap(blocks, i, j)
+            i++
+        }
+    }
+    // move pivot to correct position
+    swap(blocks, i, end)
+    return i
+}
+
 fun createRandomBlocks(): MutableList<SortUiItem> {
     val blocks = mutableListOf<SortUiItem>()
     for (i in 0..7) {
-        val num = (0..20).random()
+        val num = (0..50).random()
         blocks.add(
             SortUiItem(
                 id = i,
@@ -71,10 +94,31 @@ fun createRandomBlocks(): MutableList<SortUiItem> {
 @Composable
 fun Sorting() {
     val blocks = createRandomBlocks().toMutableStateList()
+    val blocksCopyOne = remember { blocks.toMutableStateList() }
+    val blocksCopyTwo = remember { blocks.toMutableStateList() }
+    val blocksCopyThree = remember { blocks.toMutableStateList() }
+    val blocksCopyFour = remember { blocks.toMutableStateList() }
 
-    val bubbleSortViewModel = SortingViewModel(BubbleSortUseCase(), blocks)
-    val quickSortViewModel = SortingViewModel(BubbleSortUseCase(), blocks)
-    val selectionSortViewModel = SortingViewModel(BubbleSortUseCase(), blocks)
+    val bubbleSortViewModel = SortingViewModel(BubbleSortUseCase(), blocksCopyOne)
+    val quickSortViewModel = SortingViewModel(QuickSortUseCase(), blocksCopyTwo)
+    val selectionSortViewModel = SortingViewModel(SelectionSortUseCase(), blocksCopyThree)
+    val insertionSortViewModel = SortingViewModel(BubbleSortUseCase(), blocksCopyFour)
+
+    fun randomize() {
+        blocks.clear()
+        blocksCopyOne.clear()
+        blocksCopyTwo.clear()
+        blocksCopyThree.clear()
+        blocksCopyFour.clear()
+
+        blocks.addAll(createRandomBlocks().toMutableStateList())
+
+        blocksCopyOne.addAll(blocks)
+        blocksCopyTwo.addAll(blocks)
+        blocksCopyThree.addAll(blocks)
+        blocksCopyFour.addAll(blocks)
+
+    }
 
     Column(
         modifier = Modifier
@@ -89,6 +133,7 @@ fun Sorting() {
                 bubbleSortViewModel.sort()
                 quickSortViewModel.sort()
                 selectionSortViewModel.sort()
+                insertionSortViewModel.sort()
             }) {
                 Text(
                     text = "Sort blocks",
@@ -98,10 +143,7 @@ fun Sorting() {
             }
             Spacer(modifier = Modifier.padding(10.dp))
 
-            Button(onClick = {
-                blocks.clear()
-                blocks.addAll(createRandomBlocks().toMutableStateList())
-            }) {
+            Button(onClick = { randomize() }) {
                 Text(
                     text = "Random",
                     fontWeight = FontWeight.Bold,
@@ -113,7 +155,8 @@ fun Sorting() {
         SortingView(
             bubbleSortViewModel = bubbleSortViewModel,
             quickSortViewModel = quickSortViewModel,
-            selectionSortViewModel = selectionSortViewModel
+            selectionSortViewModel = selectionSortViewModel,
+            insertionSortViewModel = insertionSortViewModel
         )
     }
 }
@@ -124,7 +167,8 @@ fun Sorting() {
 fun SortingView(
     bubbleSortViewModel: SortingViewModel,
     quickSortViewModel: SortingViewModel,
-    selectionSortViewModel: SortingViewModel
+    selectionSortViewModel: SortingViewModel,
+    insertionSortViewModel: SortingViewModel
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Spacer(modifier = Modifier.padding(5.dp))
@@ -133,6 +177,7 @@ fun SortingView(
             SortingColumn(blocks = bubbleSortViewModel.blocks, header = "Bubble")
             SortingColumn(blocks = quickSortViewModel.blocks, header = "Quick")
             SortingColumn(blocks = selectionSortViewModel.blocks, header = "Selection")
+            SortingColumn(blocks = insertionSortViewModel.blocks, header = "Insertion")
         }
     }
 }
@@ -198,7 +243,8 @@ fun SortingViewPreview() {
             SortingView(
                 bubbleSortViewModel = SortingViewModel(BubbleSortUseCase(), blocks),
                 quickSortViewModel = SortingViewModel(BubbleSortUseCase(), blocks),
-                selectionSortViewModel = SortingViewModel(BubbleSortUseCase(), blocks)
+                selectionSortViewModel = SortingViewModel(SelectionSortUseCase(), blocks),
+                insertionSortViewModel = SortingViewModel(InsertionSortUseCase(), blocks)
             )
         }
     }

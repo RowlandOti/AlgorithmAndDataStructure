@@ -1,6 +1,5 @@
 package com.rowland.algorithms.sorting
 
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -24,25 +23,32 @@ class SortingViewModel(
         viewModelScope.launch {
             sortUseCase.sort(blocks.map { sortUiItem -> sortUiItem.value }.toMutableList())
                 .collect { sortEvent ->
-                    val index = sortEvent.currentItemIndex
-                    blocks[index] = blocks[index].copy(comparingActive = true)
-                    blocks[index + 1] = blocks[index + 1].copy(comparingActive = true)
+                    val firstIndex = sortEvent.firstItemIndex
+                    val secondIndex = sortEvent.secondItemIndex
+
+                    blocks[firstIndex] = blocks[firstIndex].copy(comparingActive = true)
+                    blocks[secondIndex] = blocks[secondIndex].copy(comparingActive = true)
 
                     if (sortEvent.shouldSwap) {
-                        val temp = blocks[index].copy(comparingActive = false, swapped = true)
-                        blocks[index] =
-                            blocks[index + 1].copy(comparingActive = false, swapped = false)
-                        blocks[index + 1] = temp
-                        delay(500)
-
-                        blocks[index + 1] =
-                            blocks[index + 1].copy(comparingActive = false, swapped = false)
+                        val temp = blocks[firstIndex].copy(comparingActive = false, swapped = true)
+                        blocks[firstIndex] =
+                            blocks[secondIndex].copy(comparingActive = false, swapped = false)
+                        blocks[secondIndex] = temp
                     }
 
+                    delay(500)
+
+                    blocks[firstIndex] =
+                        blocks[firstIndex].copy(comparingActive = false, swapped = false)
+                    blocks[secondIndex] =
+                        blocks[secondIndex].copy(comparingActive = false, swapped = false)
+
+                    delay(500)
+
                     if (sortEvent.skipped) {
-                        blocks[index] = blocks[index].copy(comparingActive = false, swapped = false)
-                        blocks[index + 1] =
-                            blocks[index + 1].copy(comparingActive = false, swapped = false)
+                        blocks[firstIndex] = blocks[firstIndex].copy(comparingActive = false, swapped = false)
+                        blocks[secondIndex] =
+                            blocks[secondIndex].copy(comparingActive = false, swapped = false)
                     }
                 }
         }
