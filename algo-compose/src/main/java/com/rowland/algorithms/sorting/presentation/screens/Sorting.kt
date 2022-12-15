@@ -26,6 +26,7 @@ import com.rowland.algorithms.sorting.domain.usecases.*
 import com.rowland.algorithms.sorting.presentation.state.SortUiItem
 import com.rowland.algorithms.sorting.presentation.state.SortingViewModel
 import com.rowland.algorithms.ui.theme.AlgorithmAndDataStructureTheme
+import com.rowland.algorithms.ui.theme.BabyYellow
 
 fun main(args: Array<String>) {
     val blocks = mutableListOf<Int>()
@@ -209,9 +210,9 @@ fun SortingColumn(blocks: List<SortUiItem>, header: String) {
 @Composable
 fun AnimatedBox(block: SortUiItem, modifier: Modifier) {
     val borderStoke = if (block.comparingActive) {
-        BorderStroke(width = 3.dp, Color.White)
+        BorderStroke(width = 4.dp, BabyYellow)
     } else {
-        BorderStroke(width = 3.dp, Color.Transparent)
+        BorderStroke(width = 4.dp, Color.Transparent)
     }
 
     Box(
