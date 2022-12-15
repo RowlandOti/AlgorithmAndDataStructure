@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.rowland.algorithms.sorting.*
+import com.rowland.algorithms.sorting.presentation.screens.MergeSorting
 import com.rowland.algorithms.ui.theme.AlgorithmAndDataStructureTheme
 
 class MainActivity : ComponentActivity() {
@@ -28,7 +29,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.tertiary,
                 ) {
-                    Sorting()
+                    MergeSorting()
                 }
             }
         }

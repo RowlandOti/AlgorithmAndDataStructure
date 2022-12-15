@@ -22,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.rowland.algorithms.sorting.domain.usecases.mergeSort
 import com.rowland.algorithms.ui.theme.AlgorithmAndDataStructureTheme
 
 fun main(args: Array<String>) {
@@ -32,8 +33,8 @@ fun main(args: Array<String>) {
     }
 
     println("Unsorted Array: $blocks")
-    val sortedBlocks = quickSort(blocks, 0, blocks.size - 1)
-    println("Sorted Array: $blocks")
+    val sortedBlocks = mergeSort(blocks)
+    println("Sorted Array: $sortedBlocks")
 }
 
 fun bubbleSort(blocks: MutableList<Int>) {
