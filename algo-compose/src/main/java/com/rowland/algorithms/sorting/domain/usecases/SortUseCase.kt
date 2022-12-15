@@ -110,8 +110,27 @@ class InsertionSortUseCase : SortUseCase {
         for (outerIndex in 0 until data.size) {
             val temp: Int = data[outerIndex]
             var innerIndex = outerIndex
+            emit(
+                SortEvent(
+                    firstItemIndex = innerIndex,
+                    secondItemIndex = outerIndex,
+                    shouldSwap = false,
+                    skipped = false
+                )
+            )
             while (innerIndex > 0 && temp < data[innerIndex - 1]) {
+                delay(500)
+                emit(
+                    SortEvent(
+                        firstItemIndex = innerIndex,
+                        secondItemIndex = innerIndex-1,
+                        shouldSwap = false,
+                        skipped = false
+                    )
+                )
+
                 data[innerIndex] = data[innerIndex - 1]
+
                 emit(
                     SortEvent(
                         firstItemIndex = innerIndex,
@@ -120,6 +139,8 @@ class InsertionSortUseCase : SortUseCase {
                         skipped = false
                     )
                 )
+                delay(500)
+
                 innerIndex -= 1
             }
             data[innerIndex] = temp

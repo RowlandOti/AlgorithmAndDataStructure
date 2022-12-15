@@ -105,7 +105,7 @@ fun Sorting() {
     val bubbleSortViewModel = SortingViewModel(BubbleSortUseCase(), blocksCopyOne)
     val quickSortViewModel = SortingViewModel(QuickSortUseCase(), blocksCopyTwo)
     val selectionSortViewModel = SortingViewModel(SelectionSortUseCase(), blocksCopyThree)
-    val insertionSortViewModel = SortingViewModel(BubbleSortUseCase(), blocksCopyFour)
+    val insertionSortViewModel = SortingViewModel(InsertionSortUseCase(), blocksCopyFour)
 
     fun randomize() {
         blocks.clear()
