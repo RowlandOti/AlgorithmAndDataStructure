@@ -1,11 +1,11 @@
-package com.rowland.algorithms.sorting
+package com.rowland.algorithms.sorting.presentation.screens
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -22,7 +22,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.rowland.algorithms.sorting.domain.usecases.mergeSort
+import com.rowland.algorithms.sorting.domain.usecases.*
+import com.rowland.algorithms.sorting.presentation.state.SortUiItem
+import com.rowland.algorithms.sorting.presentation.state.SortingViewModel
 import com.rowland.algorithms.ui.theme.AlgorithmAndDataStructureTheme
 
 fun main(args: Array<String>) {
@@ -33,7 +35,7 @@ fun main(args: Array<String>) {
     }
 
     println("Unsorted Array: $blocks")
-    val sortedBlocks = mergeSort(blocks)
+    val sortedBlocks = bubbleSort(blocks)
     println("Sorted Array: $sortedBlocks")
 }
 
@@ -195,7 +197,7 @@ fun SortingColumn(blocks: List<SortUiItem>, header: String) {
             item {
                 Text(text = header, fontWeight = FontWeight.Bold, fontSize = 16.sp)
             }
-            items(blocks) { block ->
+            itemsIndexed(items = blocks, key = { _, block -> block.id }) { _, block ->
                 AnimatedBox(
                     block = block,
                     modifier = Modifier.animateItemPlacement(animationSpec = tween(500))

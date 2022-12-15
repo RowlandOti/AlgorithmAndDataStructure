@@ -1,4 +1,4 @@
-package com.rowland.algorithms.sorting
+package com.rowland.algorithms.sorting.domain.usecases
 
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow

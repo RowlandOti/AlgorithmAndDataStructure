@@ -44,7 +44,7 @@ fun SortingViewPreview() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.tertiary,
         ) {
-            Sorting()
+            MergeSorting()
         }
     }
 }

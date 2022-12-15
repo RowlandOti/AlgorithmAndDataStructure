@@ -1,18 +1,10 @@
-package com.rowland.algorithms.sorting
+package com.rowland.algorithms.sorting.presentation.state
 
-import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.rowland.algorithms.sorting.domain.usecases.SortUseCase
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-
-data class SortUiItem(
-    val id: Int,
-    val value: Int,
-    val color: Color,
-    var comparingActive: Boolean = false,
-    var swapped: Boolean = false,
-)
 
 class SortingViewModel(
     private val sortUseCase: SortUseCase,
