@@ -1,4 +1,4 @@
-package com.rowland.algorithms.sorting.presentation.screens
+package com.rowland.algorithms.linkedlist.presentation.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -17,29 +17,42 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.rowland.algorithms.sorting.domain.usecases.MergeSortUseCase
-import com.rowland.algorithms.sorting.domain.usecases.mergeSort
-import com.rowland.algorithms.sorting.presentation.state.MergeSortViewModel
+import com.rowland.algorithms.linkedlist.LinkedList
+import com.rowland.algorithms.linkedlist.Node
+import com.rowland.algorithms.linkedlist.domain.usecases.MergeSortLinkedListUseCase
+import com.rowland.algorithms.linkedlist.presentation.state.MergeSortLinkedListViewModel
+import com.rowland.algorithms.sorting.presentation.state.SortUiItem
 import com.rowland.algorithms.ui.theme.AlgorithmAndDataStructureTheme
 
-fun main(args: Array<String>) {
-    val blocks = mutableListOf<Int>()
-    for (i in 0..7) {
-        val num = (0..20).random()
-        blocks.add(num)
+fun createRandomLinkedList(): MutableList<SortUiItem> {
+    val blocks = mutableListOf<SortUiItem>()
+    for (i in 0..6) {
+        val num = (0..9).random()
+        blocks.add(
+            SortUiItem(
+                id = i,
+                value = num,
+                color = Color(
+                    red = (0..255).random(),
+                    green = (0..255).random(),
+                    blue = 255,
+                    alpha = 255
+                )
+            )
+        )
     }
-
-    println("Unsorted Array: $blocks")
-    val sortedBlocks = mergeSort(blocks)
-    println("Sorted Array: $sortedBlocks")
+    return blocks
 }
 
 @Composable
-fun MergeSorting() {
-    val blocks = remember { createRandomBlocks().toMutableStateList() }
+fun MergeSortingLinkedList() {
+    val blocks = remember { createRandomLinkedList().toMutableStateList() }
+
+    val linkedList = LinkedList()
+    blocks.forEach { linkedList.add(it.value) }
 
     val mergeSortViewModel =
-        MergeSortViewModel(MergeSortUseCase(), blocks.map { it.value }.toMutableList())
+        MergeSortLinkedListViewModel(MergeSortLinkedListUseCase(), linkedList.head!!)
 
     Box(
         modifier = Modifier
@@ -73,11 +86,14 @@ fun MergeSorting() {
                     Divider(
                         Modifier
                             .height(1.dp)
-                            .fillMaxWidth())
+                            .fillMaxWidth()
+                    )
                 }
             }
 
-            itemsIndexed(mergeSortViewModel.sortedBlocks, key = {_, it -> it.guid}) { index, sortUiItem ->
+            itemsIndexed(
+                mergeSortViewModel.sortedBlocks,
+                key = { _, it -> it.guid }) { index, sortUiItem ->
                 val depthParts = sortUiItem.sortParts
 
                 if (index == 0) {
@@ -93,7 +109,7 @@ fun MergeSorting() {
                     )
                 }
 
-                if (index == blocks.size/2) {
+                if (index == blocks.size / 2) {
                     Text(
                         text = "Merging",
                         fontWeight = FontWeight.Bold,
@@ -111,29 +127,34 @@ fun MergeSorting() {
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     for (part in depthParts) {
+
                         Row(
                             horizontalArrangement = Arrangement.SpaceBetween,
                             modifier = Modifier
-                                .padding(start = if (depthParts.indexOf(part) == 0) 0.dp else 15.dp)
+                                .padding(start = if (depthParts.indexOf(part) == 0) 0.dp else 10.dp)
                                 .background(sortUiItem.color, RoundedCornerShape(8.dp))
                                 .padding(5.dp)
                         ) {
-                            for (num in part) {
-                                if (part.indexOf(num) != part.size - 1) {
+                            var currPart: Node? = part
+
+                            while (currPart != null) {
+
+                                if (currPart.next != null) {
                                     Text(
-                                        text = "$num |",
+                                        text = "${currPart.value} |",
                                         fontWeight = FontWeight.Bold,
                                         fontSize = 16.sp,
                                         color = Color.White
                                     )
                                 } else {
                                     Text(
-                                        text = "$num",
+                                        text = "${currPart.value}",
                                         fontWeight = FontWeight.Bold,
                                         fontSize = 16.sp,
                                         color = Color.White
                                     )
                                 }
+                                currPart = currPart.next
                             }
                         }
                     }
@@ -173,7 +194,7 @@ fun MergeSorting() {
 
                 Button(onClick = {
                     blocks.clear()
-                    blocks.addAll(createRandomBlocks().toMutableStateList())
+                    blocks.addAll(createRandomLinkedList().toMutableStateList())
                 }) {
                     Text(
                         text = "Random",
@@ -188,13 +209,13 @@ fun MergeSorting() {
 
 @Preview(name = "Light Mode", showBackground = true)
 @Composable
-fun MergeSortingPreview() {
+fun MergeSortingLinkedListPreview() {
     AlgorithmAndDataStructureTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background,
         ) {
-            MergeSorting()
+            MergeSortingLinkedList()
         }
     }
 }
