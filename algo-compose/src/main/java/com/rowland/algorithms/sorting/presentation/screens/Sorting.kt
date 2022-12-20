@@ -36,7 +36,7 @@ fun main(args: Array<String>) {
     }
 
     println("Unsorted Array: $blocks")
-    val sortedBlocks = bubbleSort(blocks)
+    val sortedBlocks = quickSortVariant(blocks)
     println("Sorted Array: $sortedBlocks")
 }
 
@@ -57,6 +57,30 @@ fun quickSort(blocks: MutableList<Int>, start: Int, end: Int) {
         quickSort(blocks, start, pivotIndex - 1)
         quickSort(blocks, pivotIndex + 1, end)
     }
+}
+
+fun quickSortVariant(blocks: MutableList<Int>): MutableList<Int> {
+    if (blocks.size <= 1) {
+        return blocks
+    }
+
+    val pivot = blocks[blocks.size - 1]
+    var left = mutableListOf<Int>()
+    var right = mutableListOf<Int>()
+
+    for (i in 0 until blocks.size - 1) {
+        if (blocks[i] < pivot) {
+            left.add(blocks[i])
+        } else {
+            right.add(blocks[i])
+        }
+    }
+
+    left = quickSortVariant(left)
+    val middle = mutableListOf(pivot)
+    right = quickSortVariant(right)
+
+    return (left + middle + right).toMutableList()
 }
 
 fun partition(blocks: MutableList<Int>, start: Int, end: Int): Int {
