@@ -31,7 +31,7 @@ import com.rowland.algorithms.ui.theme.BabyYellow
 fun main(args: Array<String>) {
     val blocks = mutableListOf<Int>()
     for (i in 0..7) {
-        val num = (0..20).random()
+        val num = (0..99).random()
         blocks.add(num)
     }
 
@@ -65,8 +65,8 @@ fun quickSortVariant(blocks: MutableList<Int>): MutableList<Int> {
     }
 
     val pivot = blocks[blocks.size - 1]
-    var left = mutableListOf<Int>()
-    var right = mutableListOf<Int>()
+    val left = mutableListOf<Int>()
+    val right = mutableListOf<Int>()
 
     for (i in 0 until blocks.size - 1) {
         if (blocks[i] < pivot) {
@@ -76,11 +76,7 @@ fun quickSortVariant(blocks: MutableList<Int>): MutableList<Int> {
         }
     }
 
-    left = quickSortVariant(left)
-    val middle = mutableListOf(pivot)
-    right = quickSortVariant(right)
-
-    return (left + middle + right).toMutableList()
+    return (quickSortVariant(left) + mutableListOf(pivot) + quickSortVariant(right)).toMutableList()
 }
 
 fun partition(blocks: MutableList<Int>, start: Int, end: Int): Int {
