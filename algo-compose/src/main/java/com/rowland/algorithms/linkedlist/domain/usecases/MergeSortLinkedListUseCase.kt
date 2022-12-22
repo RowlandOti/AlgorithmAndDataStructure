@@ -18,6 +18,7 @@ class MergeSortLinkedListUseCase {
                 sortState = MergeSortState.DividedState()
             )
         )
+        delay(500)
 
         if (head.next == null) {
             return head

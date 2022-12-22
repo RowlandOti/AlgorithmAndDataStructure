@@ -5,6 +5,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.LineAxis
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -26,7 +29,7 @@ import com.rowland.algorithms.ui.theme.AlgorithmAndDataStructureTheme
 
 fun createRandomLinkedList(): MutableList<SortUiItem> {
     val blocks = mutableListOf<SortUiItem>()
-    for (i in 0..6) {
+    for (i in 0..7) {
         val num = (0..9).random()
         blocks.add(
             SortUiItem(
@@ -126,41 +129,60 @@ fun MergeSortingLinkedList() {
                     horizontalArrangement = Arrangement.Center,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    for (part in depthParts) {
+                    for (i in depthParts.indices) {
+
+                        val part = depthParts[i]
 
                         Row(
                             horizontalArrangement = Arrangement.SpaceBetween,
-                            modifier = Modifier
-                                .padding(start = if (depthParts.indexOf(part) == 0) 0.dp else 10.dp)
-                                .background(sortUiItem.color, RoundedCornerShape(8.dp))
-                                .padding(5.dp)
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
+
                             var currPart: Node? = part
 
                             while (currPart != null) {
-
-                                if (currPart.next != null) {
+                                Box(
+                                    modifier = Modifier
+                                        .padding(start = 0.dp)
+                                        .background(sortUiItem.color, RoundedCornerShape(8.dp))
+                                        .padding(5.dp)
+                                ) {
                                     Text(
-                                        text = "${currPart.value} |",
-                                        fontWeight = FontWeight.Bold,
-                                        fontSize = 16.sp,
-                                        color = Color.White
-                                    )
-                                } else {
-                                    Text(
-                                        text = "${currPart.value}",
+                                        text = "${currPart!!.value}",
                                         fontWeight = FontWeight.Bold,
                                         fontSize = 16.sp,
                                         color = Color.White
                                     )
                                 }
+
+                                if (currPart.next != null) {
+                                    Icon(
+                                        imageVector = Icons.Default.ArrowForward,
+                                        contentDescription = "Next",
+                                        tint = MaterialTheme.colorScheme.onTertiary,
+                                        modifier = Modifier
+                                            .padding(1.dp)
+                                            .size(20.dp)
+                                    )
+                                }
                                 currPart = currPart.next
+                            }
+
+                            if (i != depthParts.size - 1) {
+                                Spacer(modifier = Modifier.padding(horizontal = 1.dp))
+                                Icon(
+                                    imageVector = Icons.Default.LineAxis,
+                                    contentDescription = "Next",
+                                    tint = MaterialTheme.colorScheme.onTertiary,
+                                    modifier = Modifier
+                                        .padding(1.dp)
+                                        .size(20.dp)
+                                )
+                                Spacer(modifier = Modifier.padding(horizontal = 1.dp))
                             }
                         }
                     }
-
                 }
-
             }
         }
 
